@@ -1,1 +1,2 @@
-![demo pic](https://github.com/kurisufriend/talker/blob/main/talker.png?raw=true)
+# talker
+vocaloid-esque word-to-phenome-to-sound program
