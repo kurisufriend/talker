@@ -1,8 +1,19 @@
 #programs importing this file as a library should load() the phenomes then use talk() to speak
 import os
+import sys
 import requests
+from pydub import AudioSegment
 def talk(word, dict):
-    print("<", dict[word.upper()])
+    all = ["AA", "AE", "AH", "AO", "AW", "AY", "B", "CH", "D", "DH", "EH", "ER", "EY", "F", "G", "HH", "IH", "IY", "JH", "K", "L", "M", "N", "NG", "OW", "OY", "P", "R", "S", "SH", "T", "TH", "UH", "UW", "V", "W", "Y", "Z", "ZH"]
+    if not os.path.exists("phenome-samples"): os.mkdir("phenome-samples")
+    for phenome in all:
+        if not os.path.isfile("phenome-samples/"+phenome):
+            print("missing phenome audio:", phenome)
+    new = []
+    for phenome in dict[word.upper()]:
+        if phenome[-1].isdigit(): new.append(phenome[0:-1])
+        else: new.append(phenome)
+    print("<", new)
 def load():
     ps = {}
     if not os.path.isfile("cmudict.txt"):
