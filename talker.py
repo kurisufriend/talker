@@ -3,17 +3,23 @@ import os
 import sys
 import requests
 from pydub import AudioSegment
+from pydub.playback import play
 def talk(word, dict):
     all = ["AA", "AE", "AH", "AO", "AW", "AY", "B", "CH", "D", "DH", "EH", "ER", "EY", "F", "G", "HH", "IH", "IY", "JH", "K", "L", "M", "N", "NG", "OW", "OY", "P", "R", "S", "SH", "T", "TH", "UH", "UW", "V", "W", "Y", "Z", "ZH"]
     if not os.path.exists("phenome-samples"): os.mkdir("phenome-samples")
     for phenome in all:
-        if not os.path.isfile("phenome-samples/"+phenome):
+        if not os.path.isfile("phenome-samples/"+phenome+".wav"):
             print("missing phenome audio:", phenome)
     new = []
     for phenome in dict[word.upper()]:
         if phenome[-1].isdigit(): new.append(phenome[0:-1])
         else: new.append(phenome)
     print("<", new)
+    word = AudioSegment.empty()
+    for p in new:
+        word += AudioSegment.from_file("phenome-samples/"+p+".wav")
+    play(word)
+
 def load():
     ps = {}
     if not os.path.isfile("cmudict.txt"):
@@ -36,6 +42,6 @@ def main():
         try:
             for word in inp.split(" "): talk(word, ps)
         except:
-            print("word(s) not in phenome dictionary")
+            print("word(s) not in phenome dictionary or error playing phenome audio")
 if __name__ == "__main__":
     main()
